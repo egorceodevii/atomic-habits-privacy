@@ -3,173 +3,401 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atomic Habits — твой путь маленьких шагов</title>
-<meta name="description" content="Минималистичный трекер привычек на русском. Создавай привычки, разбивай на шаги, следи за прогрессом. Без рекламы, без регистрации, без облака.">
-<meta property="og:title" content="Atomic Habits — путь маленьких шагов">
-<meta property="og:description" content="Минималистичный трекер привычек. Без рекламы и облака — всё на твоём устройстве.">
+<title>Atomic Habits</title>
+<meta name="description" content="Минималистичный трекер привычек. Без рекламы, без облака, без отвлечений.">
+<meta property="og:title" content="Atomic Habits — трекер привычек">
+<meta property="og:description" content="Маленькие действия. Большие изменения.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
 :root {
-  --primary: #6366F1;
-  --accent: #8B5CF6;
-  --pink: #EC4899;
-  --bg: #0F172A;
-  --bg-light: #1A1A22;
-  --text: #F8FAFC;
-  --muted: #94A3B8;
+  --bg: #000000;
+  --surface: #0A0A0A;
+  --surface-2: #141414;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #FFFFFF;
+  --text-muted: #888888;
+  --text-faint: #555555;
+  --accent: #7C3AED;
+  --accent-glow: rgba(124, 58, 237, 0.5);
 }
+
 html { scroll-behavior: smooth; }
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
   overflow-x: hidden;
+  font-feature-settings: "ss01", "ss02";
 }
-.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-/* Hero */
-.hero {
-  min-height: 90vh;
-  padding: 60px 0 80px;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.15), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1), transparent 50%),
-    var(--bg);
+.mono { font-family: 'Geist Mono', ui-monospace, monospace; }
+
+::selection { background: var(--accent); color: white; }
+
+/* === LAYOUT === */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === NAV === */
+nav {
+  position: fixed;
+  top: 16px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.nav-inner {
   display: flex;
   align-items: center;
-  position: relative;
-}
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-}
-@media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  justify-content: space-between;
+  padding: 10px 12px 10px 20px;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  width: 100%;
+  max-width: 720px;
 }
 
-.logo-mark {
-  display: inline-flex;
+.nav-logo {
+  display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 16px;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 999px;
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 24px;
-  font-weight: 500;
-}
-.logo-mark .dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #10B981;
-  box-shadow: 0 0 12px #10B981;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.3px;
 }
 
-h1 {
-  font-size: 56px;
-  line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -2px;
-  margin-bottom: 20px;
+.nav-logo-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1a1633 0%, #312E81 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
 }
-.gradient-text {
-  background: linear-gradient(135deg, #A78BFA, #F472B6);
+
+.nav-logo-icon::before,
+.nav-logo-icon::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 7px;
+  border: 1px solid;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+.nav-logo-icon::before {
+  border-color: #A78BFA;
+  transform: rotate(35deg);
+}
+.nav-logo-icon::after {
+  border-color: #F472B6;
+  transform: rotate(-35deg);
+}
+
+.nav-logo-text {
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.nav-pill .pulse {
+  width: 6px;
+  height: 6px;
+  background: #34D399;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+}
+
+.nav-cta {
+  background: white;
+  color: black;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.nav-cta:hover { opacity: 0.85; }
+
+@media (max-width: 640px) {
+  .nav-pill { display: none; }
+}
+
+/* === HERO === */
+.hero {
+  min-height: 100vh;
+  padding: 140px 0 80px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Hero ambient glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero grid lines */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  width: 100%;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  letter-spacing: 0.2px;
+}
+
+.hero-tag .dot {
+  width: 6px;
+  height: 6px;
+  background: #34D399;
+  border-radius: 50%;
+}
+
+h1.hero-title {
+  font-size: clamp(48px, 9vw, 128px);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  margin-bottom: 32px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1.hero-title .accent {
+  background: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 700;
 }
-@media (max-width: 768px) { h1 { font-size: 38px; } }
 
-.hero p.lead {
-  font-size: 19px;
-  color: var(--muted);
-  margin-bottom: 32px;
-  max-width: 480px;
+.hero-sub {
+  font-size: clamp(17px, 2vw, 22px);
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 56px;
+  line-height: 1.5;
+  font-weight: 400;
 }
-@media (max-width: 768px) { .hero p.lead { margin: 0 auto 32px; } }
 
 .cta-row {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
 }
-@media (max-width: 768px) { .cta-row { justify-content: center; } }
 
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 28px;
-  border-radius: 14px;
-  font-weight: 600;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 100px;
   font-size: 15px;
+  font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s;
-  border: 0;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
   cursor: pointer;
+  font-family: inherit;
 }
+
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: white;
-  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  background: white;
+  color: black;
 }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(99, 102, 241, 0.5); }
-.btn-ghost {
+
+.btn-primary:hover {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-1px);
+}
+
+.btn-primary .arrow {
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover .arrow {
+  transform: translateX(3px);
+}
+
+.btn-secondary {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-color: var(--border);
 }
-.btn-ghost:hover { background: rgba(255, 255, 255, 0.1); }
 
-/* Phone mockup */
-.phone-mockup {
-  position: relative;
-  width: 280px;
-  height: 560px;
-  margin: 0 auto;
-  background: #1a1a22;
-  border-radius: 40px;
-  border: 8px solid #2a2a36;
-  padding: 16px;
-  box-shadow: 0 30px 80px rgba(99, 102, 241, 0.25);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-strong);
 }
-.phone-screen {
-  flex: 1;
+
+/* === DEVICE MOCKUP === */
+.device-stage {
+  margin: 100px auto 0;
+  position: relative;
+  max-width: 320px;
+  perspective: 1500px;
+}
+
+.device {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9/19;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
+  border-radius: 44px;
+  padding: 8px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 30px 80px -20px rgba(124, 58, 237, 0.3),
+    0 80px 120px -40px rgba(0, 0, 0, 0.8);
+  transform: rotateX(8deg);
+}
+
+.device::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 24px;
+  background: black;
+  border-radius: 100px;
+  z-index: 10;
+}
+
+.device-screen {
+  width: 100%;
+  height: 100%;
   background: #0F172A;
-  border-radius: 28px;
-  padding: 24px 16px;
-  position: relative;
+  border-radius: 36px;
+  padding: 48px 18px 18px;
   overflow: hidden;
+  position: relative;
 }
-.screen-greeting { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-.screen-today { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
-.gradient-card {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  border-radius: 14px;
+
+.app-greeting {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.app-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+
+.app-card {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
   padding: 14px;
-  margin-bottom: 16px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  margin-bottom: 14px;
 }
-.gradient-card .ttl { font-size: 12px; font-weight: 600; }
-.gradient-card .sub { font-size: 10px; opacity: 0.8; margin-top: 2px; }
-.gradient-card .ring {
-  width: 36px; height: 36px;
-  border: 3px solid rgba(255,255,255,0.3);
+
+.app-card-info { flex: 1; }
+.app-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.app-card-sub {
+  font-size: 10px;
+  opacity: 0.8;
+}
+.app-card-ring {
+  width: 34px;
+  height: 34px;
+  border: 3px solid rgba(255,255,255,0.25);
   border-top-color: white;
   border-radius: 50%;
-  margin-left: auto;
   position: relative;
+  transform: rotate(-90deg);
 }
-.gradient-card .ring::after {
+.app-card-ring::after {
   content: '67%';
   position: absolute;
   inset: 0;
@@ -178,208 +406,468 @@ h1 {
   justify-content: center;
   font-size: 9px;
   font-weight: 700;
+  transform: rotate(90deg);
 }
-.habit-row {
-  background: var(--bg-light);
-  border-radius: 12px;
-  padding: 10px;
-  margin-bottom: 8px;
+
+.app-section {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 4px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.app-habit {
+  background: rgba(255,255,255,0.04);
+  padding: 9px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
+  margin-bottom: 6px;
 }
-.habit-icon {
-  width: 32px; height: 32px;
+
+.app-habit-emoji {
+  width: 28px;
+  height: 28px;
   background: rgba(139, 92, 246, 0.2);
   border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
-}
-.habit-info { flex: 1; }
-.habit-name { font-size: 11px; font-weight: 600; }
-.habit-streak { font-size: 9px; color: var(--muted); margin-top: 2px; }
-.habit-check {
-  width: 22px; height: 22px;
-  border-radius: 6px;
-  border: 2px solid rgba(139, 92, 246, 0.4);
-}
-.habit-check.done { background: var(--accent); border-color: var(--accent); position: relative; }
-.habit-check.done::after {
-  content: '✓';
-  position: absolute;
-  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-/* Features */
-.features {
-  padding: 80px 0;
-  background: var(--bg);
-}
-.section-eyebrow {
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent);
-  font-weight: 600;
-  margin-bottom: 12px;
-  text-align: center;
-}
-.section-title {
-  font-size: 40px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  text-align: center;
-  margin-bottom: 48px;
-}
-@media (max-width: 768px) { .section-title { font-size: 28px; } }
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-}
-.feature-card {
-  background: var(--bg-light);
-  border-radius: 20px;
-  padding: 28px;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: all 0.3s;
-}
-.feature-card:hover {
-  border-color: rgba(139, 92, 246, 0.3);
-  transform: translateY(-4px);
-}
-.feature-emoji {
-  font-size: 32px;
-  margin-bottom: 16px;
-  display: block;
-}
-.feature-card h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-.feature-card p {
-  color: var(--muted);
   font-size: 14px;
 }
 
-/* Privacy section */
-.privacy {
-  padding: 80px 0;
-  background: linear-gradient(180deg, var(--bg), #1a1633);
-}
-.privacy-card {
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  border-radius: 24px;
-  padding: 48px;
-  text-align: center;
-}
-@media (max-width: 768px) { .privacy-card { padding: 32px 20px; } }
-.privacy-card h2 {
-  font-size: 32px;
-  margin-bottom: 16px;
-  font-weight: 700;
-}
-.privacy-card p {
-  color: var(--muted);
-  font-size: 17px;
-  max-width: 600px;
-  margin: 0 auto;
-}
+.app-habit-info { flex: 1; }
+.app-habit-name { font-size: 10px; font-weight: 600; }
+.app-habit-streak { font-size: 8px; color: var(--text-muted); }
 
-/* CTA */
-.final-cta {
-  padding: 80px 0;
-  text-align: center;
+.app-habit-check {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid rgba(139, 92, 246, 0.5);
+  border-radius: 6px;
 }
-.final-cta h2 {
-  font-size: 44px;
-  margin-bottom: 16px;
-  letter-spacing: -1px;
+.app-habit-check.done {
+  background: #8B5CF6;
+  border-color: #8B5CF6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app-habit-check.done::after {
+  content: '✓';
+  color: white;
+  font-size: 12px;
   font-weight: 800;
 }
-.final-cta p {
-  color: var(--muted);
-  margin-bottom: 32px;
-  font-size: 17px;
+
+/* === SECTIONS === */
+section {
+  padding: 140px 0;
+  position: relative;
 }
 
-/* Footer */
-footer {
-  padding: 40px 0;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  text-align: center;
-  color: var(--muted);
+@media (max-width: 768px) {
+  section { padding: 90px 0; }
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #A78BFA;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  margin-bottom: 24px;
+  max-width: 800px;
+}
+
+.section-title .muted {
+  color: var(--text-faint);
+}
+
+.section-sub {
+  font-size: 18px;
+  color: var(--text-muted);
+  max-width: 560px;
+  margin-bottom: 80px;
+}
+
+/* === FEATURES BENTO === */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.tile:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-2);
+  transform: translateY(-2px);
+}
+
+.tile-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-faint);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.tile h3 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.tile p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.tile.large { grid-column: span 4; min-height: 320px; }
+.tile.medium { grid-column: span 3; min-height: 260px; }
+.tile.wide { grid-column: span 6; }
+.tile.small { grid-column: span 2; }
+
+@media (max-width: 900px) {
+  .bento { grid-template-columns: 1fr; }
+  .tile.large, .tile.medium, .tile.wide, .tile.small { grid-column: span 1; min-height: auto; }
+}
+
+/* Tile decorations */
+.tile-visual {
+  margin-top: 24px;
+  position: relative;
+}
+
+.chain-viz {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chain-node {
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.chain-node.done {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: rgba(124, 58, 237, 0.4);
+  color: #C4B5FD;
+}
+
+.chain-arrow {
+  color: var(--text-faint);
+  font-size: 14px;
+}
+
+.streak-viz {
+  display: flex;
+  gap: 4px;
+  margin-top: 24px;
+}
+
+.streak-day {
+  flex: 1;
+  height: 32px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+  position: relative;
+}
+
+.streak-day.filled {
+  background: linear-gradient(180deg, #8B5CF6, #6366F1);
+}
+
+.calendar-viz {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 24px;
+}
+
+.cal-cell {
+  aspect-ratio: 1;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+}
+
+.cal-cell.f1 { background: rgba(124, 58, 237, 0.2); }
+.cal-cell.f2 { background: rgba(124, 58, 237, 0.4); }
+.cal-cell.f3 { background: rgba(124, 58, 237, 0.7); }
+.cal-cell.today {
+  background: #8B5CF6;
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.6);
+}
+
+.privacy-viz {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
   font-size: 13px;
 }
-footer a {
-  color: var(--accent);
-  text-decoration: none;
-  margin: 0 8px;
+
+.privacy-viz .badge {
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
 }
-footer a:hover { color: var(--text); }
+
+.privacy-viz .badge.no { text-decoration: line-through; opacity: 0.5; }
+
+/* === STATS BAND === */
+.stats {
+  padding: 80px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-num {
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background: linear-gradient(180deg, #FFFFFF 0%, #888888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+  .stats-grid { grid-template-columns: 1fr; }
+}
+
+/* === FINAL CTA === */
+.final {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.final::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+}
+
+.final-content {
+  position: relative;
+  z-index: 1;
+}
+
+.final h2 {
+  font-size: clamp(48px, 8vw, 112px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.final h2 .accent {
+  background: linear-gradient(135deg, #A78BFA 0%, #F472B6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.final p {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 48px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* === FOOTER === */
+footer {
+  padding: 48px 0 32px;
+  border-top: 1px solid var(--border);
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-meta {
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text); }
+
+/* === ENTRY ANIMATIONS === */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-content > * {
+  opacity: 0;
+  animation: rise 1s cubic-bezier(0.2, 0.6, 0.2, 1) forwards;
+}
+.hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes float {
+  0%, 100% { transform: rotateX(8deg) translateY(0); }
+  50% { transform: rotateX(8deg) translateY(-8px); }
+}
+.device { animation: float 6s ease-in-out infinite; }
 </style>
 </head>
 <body>
 
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">
+        <span class="nav-logo-text">AH</span>
+      </div>
+      <span>Atomic Habits</span>
+    </div>
+    <div class="nav-pill">
+      <span class="pulse"></span>
+      <span>v1.0 в RuStore</span>
+    </div>
+    <a href="https://www.rustore.ru/catalog/app/com.atomic.habits" target="_blank" rel="noopener" class="nav-cta">Скачать</a>
+  </div>
+</nav>
+
 <section class="hero">
   <div class="container">
-    <div class="hero-grid">
-      <div>
-        <div class="logo-mark">
-          <span class="dot"></span>
-          <span>Уже в RuStore</span>
-        </div>
-        <h1>Большие изменения<br><span class="gradient-text">из маленьких шагов</span></h1>
-        <p class="lead">Минималистичный трекер привычек на русском. Создавай привычки, разбивай их на шаги, следи за прогрессом и копи серии без рекламы и облака.</p>
-        <div class="cta-row">
-          <a href="https://www.rustore.ru/catalog/app/com.atomic.habits" class="btn btn-primary">Скачать в RuStore</a>
-          <a href="#features" class="btn btn-ghost">Узнать больше</a>
-        </div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="dot"></span>
+        <span>Уже в RuStore — бесплатно, без рекламы</span>
       </div>
-      <div>
-        <div class="phone-mockup">
-          <div class="phone-screen">
-            <div class="screen-greeting">Добрый вечер</div>
-            <div class="screen-today">Сегодня</div>
-            <div class="gradient-card">
-              <div>
-                <div class="ttl">Выполнено 2 из 3</div>
-                <div class="sub">Идёшь к цели</div>
+      <h1 class="hero-title">Маленькие действия.<br><span class="accent">Большие изменения.</span></h1>
+      <p class="hero-sub">Трекер привычек, который не превращает дисциплину в игру. Просто инструмент. Просто ты.</p>
+      <div class="cta-row">
+        <a href="https://www.rustore.ru/catalog/app/com.atomic.habits" target="_blank" rel="noopener" class="btn btn-primary">
+          <span>Скачать в RuStore</span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="#features" class="btn btn-secondary">Узнать больше</a>
+      </div>
+
+      <div class="device-stage">
+        <div class="device">
+          <div class="device-screen">
+            <div class="app-greeting">Добрый вечер</div>
+            <div class="app-title">Сегодня</div>
+            <div class="app-card">
+              <div class="app-card-info">
+                <div class="app-card-title">Выполнено 2 из 3</div>
+                <div class="app-card-sub">Продолжай</div>
               </div>
-              <div class="ring"></div>
+              <div class="app-card-ring"></div>
             </div>
-            <div class="habit-row">
-              <div class="habit-icon">💧</div>
-              <div class="habit-info">
-                <div class="habit-name">Пить воду</div>
-                <div class="habit-streak">🔥 12 дн.</div>
+            <div class="app-section">Привычки</div>
+            <div class="app-habit">
+              <div class="app-habit-emoji">💧</div>
+              <div class="app-habit-info">
+                <div class="app-habit-name">Пить воду</div>
+                <div class="app-habit-streak">🔥 12 дней</div>
               </div>
-              <div class="habit-check done"></div>
+              <div class="app-habit-check done"></div>
             </div>
-            <div class="habit-row">
-              <div class="habit-icon">🧘</div>
-              <div class="habit-info">
-                <div class="habit-name">Утренний ритуал</div>
-                <div class="habit-streak">🔥 5 дн.</div>
+            <div class="app-habit">
+              <div class="app-habit-emoji">🧘</div>
+              <div class="app-habit-info">
+                <div class="app-habit-name">Утренний ритуал</div>
+                <div class="app-habit-streak">🔥 5 дней</div>
               </div>
-              <div class="habit-check done"></div>
+              <div class="app-habit-check done"></div>
             </div>
-            <div class="habit-row">
-              <div class="habit-icon">📚</div>
-              <div class="habit-info">
-                <div class="habit-name">Чтение</div>
-                <div class="habit-streak">🔥 8 дн.</div>
+            <div class="app-habit">
+              <div class="app-habit-emoji">📚</div>
+              <div class="app-habit-info">
+                <div class="app-habit-name">Чтение 30 мин</div>
+                <div class="app-habit-streak">🔥 8 дней</div>
               </div>
-              <div class="habit-check"></div>
+              <div class="app-habit-check"></div>
             </div>
           </div>
         </div>
@@ -388,72 +876,157 @@ footer a:hover { color: var(--text); }
   </div>
 </section>
 
-<section class="features" id="features">
+<section id="features">
   <div class="container">
-    <div class="section-eyebrow">Что внутри</div>
-    <h2 class="section-title">Только нужное, ничего лишнего</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <span class="feature-emoji">🌱</span>
+    <div class="section-tag">
+      <span>Что внутри</span>
+    </div>
+    <h2 class="section-title">Всё, что нужно. <span class="muted">Ничего, что отвлекает.</span></h2>
+
+    <div class="bento">
+      <div class="tile large">
+        <div class="tile-eyebrow">01 — Главная фишка</div>
         <h3>Цепочки шагов</h3>
-        <p>Разбивай привычки на мини-действия. «Утренний ритуал» — это вода, растяжка, дневник. Каждый шаг отмечается отдельно.</p>
+        <p>Привычка — это не одно действие. Это последовательность. Разбивай и отмечай каждый шаг отдельно.</p>
+        <div class="tile-visual">
+          <div class="chain-viz">
+            <span class="chain-node done">Стакан воды</span>
+            <span class="chain-arrow">→</span>
+            <span class="chain-node done">Растяжка</span>
+            <span class="chain-arrow">→</span>
+            <span class="chain-node">Дневник</span>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="feature-emoji">🔥</span>
-        <h3>Серии и прогресс</h3>
-        <p>Следи за streak'ами, недельным графиком и календарём месяца. Не теряй ни одного дня.</p>
+
+      <div class="tile medium">
+        <div class="tile-eyebrow">02 — Прогресс</div>
+        <h3>Серии и графики</h3>
+        <p>Не пропускай дни. Не теряй ритм.</p>
+        <div class="tile-visual">
+          <div class="streak-viz">
+            <div class="streak-day filled"></div>
+            <div class="streak-day filled"></div>
+            <div class="streak-day filled"></div>
+            <div class="streak-day filled"></div>
+            <div class="streak-day filled"></div>
+            <div class="streak-day"></div>
+            <div class="streak-day"></div>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="feature-emoji">🔔</span>
-        <h3>Умные напоминания</h3>
-        <p>Выбери время — и приложение само напомнит. Каждый день в одно время, без рекламы и отвлечений.</p>
+
+      <div class="tile medium">
+        <div class="tile-eyebrow">03 — Календарь</div>
+        <h3>История на ладони</h3>
+        <p>Каждый день месяца — на одном экране.</p>
+        <div class="tile-visual">
+          <div class="calendar-viz">
+            <div class="cal-cell f2"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell f1"></div>
+            <div class="cal-cell f3"></div>
+            <div class="cal-cell f2"></div>
+            <div class="cal-cell f1"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell f3"></div>
+            <div class="cal-cell f3"></div>
+            <div class="cal-cell f2"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell f1"></div>
+            <div class="cal-cell f3"></div>
+            <div class="cal-cell today"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="feature-emoji">✨</span>
+
+      <div class="tile small">
+        <div class="tile-eyebrow">04</div>
+        <h3>Напоминания</h3>
+        <p>В нужное время. Один раз в день. Без спама.</p>
+      </div>
+
+      <div class="tile small">
+        <div class="tile-eyebrow">05</div>
+        <h3>Темы</h3>
+        <p>Светлая и тёмная — следует за системой.</p>
+      </div>
+
+      <div class="tile small">
+        <div class="tile-eyebrow">06</div>
         <h3>Достижения</h3>
-        <p>Анимированные milestone-баннеры: 3 дня, неделя, две недели, месяц, 100 дней. Маленькие награды за стойкость.</p>
+        <p>Тихие. Без салютов. 3, 7, 30, 100 дней.</p>
       </div>
-      <div class="feature-card">
-        <span class="feature-emoji">🎨</span>
-        <h3>Стильный дизайн</h3>
-        <p>Современный минимализм с мягкими градиентами. Светлая и тёмная тема — выбирает сама из настроек системы.</p>
-      </div>
-      <div class="feature-card">
-        <span class="feature-emoji">🔒</span>
-        <h3>Полная приватность</h3>
-        <p>Никакой регистрации, аналитики и облака. Все данные хранятся только на твоём телефоне.</p>
+
+      <div class="tile wide">
+        <div class="tile-eyebrow">07 — Принцип</div>
+        <h3>Твои данные — только твои.</h3>
+        <p>Никакой регистрации. Никакого облака. Никакой аналитики. Приложение работает офлайн и ничего о тебе не передаёт.</p>
+        <div class="tile-visual">
+          <div class="privacy-viz">
+            <span class="badge no">Регистрация</span>
+            <span class="badge no">Облако</span>
+            <span class="badge no">Аналитика</span>
+            <span class="badge no">Реклама</span>
+            <span class="badge no">Трекинг</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="privacy">
+<section class="stats">
   <div class="container">
-    <div class="privacy-card">
-      <h2>🔐 Твои данные — только твои</h2>
-      <p>Atomic Habits работает полностью офлайн. Приложение не отправляет никаких данных в интернет, не имеет аккаунтов, не показывает рекламу и не следит за тобой. Это просто инструмент.</p>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-num">0₽</div>
+        <div class="stat-label">Полностью бесплатно</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Локально на устройстве</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Рекламы, ever</div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="final-cta" id="download">
+<section class="final">
   <div class="container">
-    <h2>Начни сегодня</h2>
-    <p>Маленькое действие сегодня — большие перемены через месяц</p>
-    <div class="cta-row" style="justify-content: center;">
-      <a href="https://www.rustore.ru/catalog/app/com.atomic.habits" class="btn btn-primary">Скачать в RuStore</a>
+    <div class="final-content">
+      <h2>Начни <span class="accent">сегодня</span>.</h2>
+      <p>Не завтра. Не с понедельника. Не с первого числа. Маленькое действие, которое ты сделаешь сейчас, важнее всех планов на год.</p>
+      <div class="cta-row">
+        <a href="https://www.rustore.ru/catalog/app/com.atomic.habits" target="_blank" rel="noopener" class="btn btn-primary">
+          <span>Скачать в RuStore</span>
+          <span class="arrow">→</span>
+        </a>
+        <a href="https://github.com/egorceodevii/atomic-habits-privacy/releases/download/v1.0.0/Atomic.Habits.apk" class="btn btn-secondary">APK напрямую</a>
+      </div>
     </div>
-    <p style="margin-top: 24px; font-size: 13px; opacity: 0.6;">Также доступно как APK <a href="ССЫЛКА_НА_APK_GITHUB" style="color: var(--accent);">здесь</a></p>
   </div>
 </section>
 
 <footer>
   <div class="container">
-    <p>© 2026 Atomic Habits</p>
-    <p style="margin-top: 8px;">
-      <a href="privacy.html">Политика конфиденциальности</a>
-      <a href="mailto:gridineg@yandex.ru">Связаться</a>
-    </p>
+    <div class="footer-row">
+      <div class="footer-meta">© 2026 Atomic Habits</div>
+      <div class="footer-links">
+        <a href="privacy.html">Политика конфиденциальности</a>
+        <a href="#" onclick="navigator.clipboard.writeText('gridineg@yandex.ru').then(()=>{this.textContent='Email скопирован';setTimeout(()=>this.textContent='Связаться',2000)});return false;">Связаться</a>
+      </div>
+    </div>
   </div>
 </footer>
 
